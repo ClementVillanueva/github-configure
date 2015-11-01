@@ -72,7 +72,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 
 	cd /home/$USER/.ssh
 
-    echo '***************************************************************************************************************'
+    	echo '***************************************************************************************************************'
 	echo 'You will be prompted to choose a passphrase.'
 	echo 'Recommended: choose a strong passphrase with alphanumerical characters, different cases and special characters.'
 	echo 'Not recommended: you can leave this field empty for no passphrase.'
