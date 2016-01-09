@@ -1,25 +1,9 @@
 #!/bin/bash
 
-#  GitHub configuration script for Debian-based operating systems
-#  Copyright (C) 2014  Clement VILLANUEVA
-#
-#  This program is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 3 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 clear
 
 # Introduces a pause function
-function pause()	{
+function pause() {
 	read -p "$*"  -n 1 -r
 }
 
@@ -28,36 +12,36 @@ sleep 3
 clear
 
 # Installs Git for Linux if not already
-echo 'Installing Git..'
+echo 'Installing Git...'
 sudo apt-get install -y git >> /dev/null
 clear
 
 # Prompts user to choose an username for Git
-read -p "Choose an username for Git : " GITUSER
+read -p 'Choose an username for Git : ' GIT_USER
 # Sets the default name for git to use when you commit
-git config --global user.name "$GITUSER"
+git config --global user.name $GIT_USER
 clear
 
-# Prompt user to choose an email for Git
-read -p "Choose an email for Git : " GITMAIL
+# Prompt user to choose an email address for Git
+read -p 'Choose an email for Git : ' GIT_EMAIL
 # Sets the default email for git to use when you commit
-git config --global user.email "$GITMAIL"
+git config --global user.email $GIT_EMAIL
 clear
 
 # Set git to use the credential memory cache
-# Set the cache to timeout after $PWTIMEMOUT seconds
-read -p "Do you want to use password cache ? (y/n) " -n 1 -r
+# Set the cache to timeout after $PW_TIMEMOUT seconds
+read -p 'Do you want to use password cache ? (y/n) ' -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
 	git config --global credential.helper cache
-	read -p "Choose a password timeout (in seconds): " PWTIMEOUT
+	read -p 'Choose a password timeout (in seconds): ' PW_TIMEOUT
 	clear
-	git config --global credential.helper 'cache --timeout=$PWTIMEOUT'
+	git config --global credential.helper 'cache --timeout=$PW_TIMEOUT'
 	clear
 fi
 
 # Prompt the user to use SSH with GitHub
-read -p "Do you want to use SSH connection with GitHub (advanced users) ? (y/n) " -n 1 -r
+read -p 'Do you want to use SSH connection with GitHub (advanced users) ? (y/n) ' -n 1 -r
 echo
 clear
 
@@ -66,7 +50,7 @@ clear
 # Creates a new ssh key, using the provided email as a label
 if [[ $REPLY =~ ^[Yy]$ ]]; then
 	clear
-	if [ ! -d "/home/$USER/.ssh" ]; then
+	if [ ! -d '/home/$USER/.ssh' ]; then
    		mkdir ~/.ssh
 	fi
 
@@ -81,7 +65,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 	echo
 	clear
 
-   	ssh-keygen -t rsa -C "$GITMAIL"
+   	ssh-keygen -t rsa -C $GIT_MAIL
 
    	clear
 
@@ -98,7 +82,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 	ssh-add id_rsa
 	clear
 
-	# Download and install xclip. If you don't have `apt-get`, you might need to use another installer (like `yum`)
+	# Download and install xclip. If you don't have `apt-get`, you might need to use another package manager (like `yum`)
 	echo 'Installing xclip...'
 	sudo apt-get install -y xclip >> /dev/null
 
@@ -122,7 +106,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 	clear
 
 	# Testing the SSH connection with GitHub
-	read -p "Do you want to use SSH connection with GitHub ? (y/n) " -n 1 -r
+	read -p 'Do you want to use SSH connection with GitHub ? (y/n) ' -n 1 -r
 	echo
 	echo '********************************************************************************************************************************************'
 	echo 'HELP'
@@ -151,11 +135,11 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 	fi
 
 	# Prompt the user for xclip to be removed if he chooses to
-	read -p "Optional: do you want the previously installed package xclip to be removed (only used to copy the SSH key directly from file to clipboard) ? (y/n) " -n 1 -r
+	read -p 'Optional: do you want the previously installed package xclip to be removed (only used to copy the SSH key directly from file to clipboard) ? (y/n) ' -n 1 -r
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
 		clear
 		echo 'Removing xclip...'
-		sudo apt-get remove -y --purge xclip* >> /dev/null
+		sudo apt-get purge -y xclip* >> /dev/null
 	fi
 fi
 
